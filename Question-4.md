@@ -2,15 +2,15 @@ The JS file below has a few errors, can you indentify and fix them?
 
 ```js
 const express = require(express);
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const http = require('http');
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const http = require("http");
 
 /**
  * Assume that these are error free.
  */
-const User = require('./models/user');
-const logger = require('./utils/logger');
+const User = require("./models/user");
+const logger = require("./utils/logger");
 
 const mongoDB = process.env.MONGO_URI;
 
@@ -24,7 +24,7 @@ const db = mongoose.connection;
 app.use(bodyParser.json());
 
 // handler to save user
-app.get('/save', function(res, req) {
+app.get("/save", function(res, req) {
   const user = new User(user);
 
   user.save(function(err) {
@@ -34,7 +34,7 @@ app.get('/save', function(res, req) {
     }
   });
 
-  res.status(200).send('success');
+  res.status(200).send("success");
 
   return res.json(user);
 });
@@ -42,7 +42,7 @@ app.get('/save', function(res, req) {
 const server = http.createServer(app);
 
 server.listen(80, function() {
-  db.on('error', function(error) {
+  db.on("error", function(error) {
     logger.log(error);
   });
 });

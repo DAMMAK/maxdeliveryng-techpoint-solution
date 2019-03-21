@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "post-test": "npm test __tests__/laundry.js"
   },
   "dependencies": {
     "jest": "24.1.0"

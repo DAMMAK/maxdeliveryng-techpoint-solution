@@ -1,0 +1,100 @@
+/**
+ * This is the entry point to the program.
+ *
+ * @param {number} noOfWashes The number of times the laundry machine can clean a dirty sock
+ * @param {number[]} cleanPile The array of clean socks
+ * @param {number[]} dirtyPile The array of dirty socks to wash
+ */
+function getMaxPairs(noOfWashes, cleanPile, dirtyPile) {
+  // Your solution should go here.
+  var noTrip = 0;
+  if (typeof noOfWashes !== "number")
+    throw Error("Number of Wash must be Number");
+  if (!Array.isArray(cleanPile) && !Array.isArray(dirtyPile))
+    throw Error("Clean Pile and Dirty Pile must be Array");
+  //   cleanPile.sort((a, b) => a - b);
+  //   dirtyPile.sort((a, b) => a - b);
+  cleanPile = mostFrequent(cleanPile);
+  dirtyPile = mostFrequent(dirtyPile);
+  let tmpClean = [];
+  let tmpDirty = [];
+  let cleanTempData = [...cleanPile];
+  let dirtyTempData = [...dirtyPile];
+  let curIndex = 0;
+  dirtyPile.forEach((element, index) => {
+    element = dirtyPile[curIndex];
+    if (noOfWashes > 0 && dirtyTempData.length > 0) {
+      let currIndex = 0;
+      let nextIndex = curIndex + 1;
+      let currValue = dirtyTempData[curIndex];
+      let nextValue = dirtyTempData[nextIndex];
+      if (currValue === nextValue) {
+        let cleanOcc = getOccurence(cleanTempData, currValue);
+        let washOcc = getOccurence(tmpClean, currValue);
+        if (cleanOcc + washOcc < 6) {
+          //   if (getOccurence(cleanPile, currValue))
+          tmpClean.push(currValue);
+          tmpClean.push(nextValue);
+        }
+        noOfWashes -= 1;
+        dirtyTempData.splice(curIndex, 2);
+      } else {
+        if (cleanPile.includes(currValue)) {
+          let occ = getOccurence(cleanPile, currValue);
+          let cleanOcc = getOccurence(cleanTempData, currValue);
+          let washOcc = getOccurence(tmpClean, currValue);
+          if (Math.floor(occ % 2) === 1 && cleanOcc + washOcc < 6) {
+            tmpClean.push(currValue);
+          }
+        }
+        dirtyTempData.splice(currIndex, 1);
+        noOfWashes -= 1;
+      }
+    }
+  });
+  var newClean = cleanTempData.concat(tmpClean);
+  var uniqVal = [...new Set(newClean)];
+  uniqVal.forEach((element, value, index) => {
+    let occ = getOccurence(newClean, element);
+    noTrip += Math.floor(occ / 2);
+  });
+
+  return noTrip;
+}
+var getOccurence = function(array, value) {
+  var count = 0;
+  array.forEach(v => v === value && count++);
+  return count;
+};
+function mostFrequent(arr) {
+  let cArr = [...arr];
+  let hocc = 0;
+  let sortArr = [];
+  arr.forEach((element, index, nArr) => {
+    if (cArr.length > 0) {
+      if (cArr.includes(element)) {
+        let occ = getOccurence(cArr, element);
+        if (occ > hocc) {
+          for (let i = 1; i <= occ; i++) {
+            //   sortArr.unshift(element);
+            //   cArr.splice(cArr.indexOf(element, 1), 1);
+            sortArr.splice(0, 0, element);
+            let checkIndex = cArr.indexOf(element);
+            cArr.splice(checkIndex, 1);
+          }
+
+          hocc = occ;
+        } else {
+          for (let i = 1; i <= occ; i++) {
+            sortArr.push(element);
+            let checkIndex = cArr.indexOf(element);
+            cArr.splice(checkIndex, 1);
+          }
+        }
+      }
+    }
+  });
+
+  return sortArr;
+}
+module.exports = getMaxPairs;
