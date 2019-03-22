@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "post-test": "npm test __tests__/laundry.js"
+    "post-test": "npm test __tests__/morse.js"
   },
   "dependencies": {
     "jest": "24.1.0"

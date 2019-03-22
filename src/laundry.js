@@ -11,7 +11,7 @@ function getMaxPairs(noOfWashes, cleanPile, dirtyPile) {
   cleanPile.sort((a, b) => {
     return a - b;
   }); // sort pile by number for easy grouping
-  let nonPair = cleanPile.slice(); // clone the entire clear pile
+  let nonPair = [...cleanPile]; // clone the entire clear pile
   cleanPile.forEach(e => {
     if (active !== "") {
       if (active === e) {
