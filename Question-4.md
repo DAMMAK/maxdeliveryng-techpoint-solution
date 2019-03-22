@@ -24,18 +24,17 @@ const db = mongoose.connection;
 app.use(bodyParser.json());
 
 // handler to save user
-app.get("/save", function(res, req) {
-  const user = new User(user);
-
-  user.save(function(err) {
-    if (err) {
-      res.status(500).send(err);
-      return logger.log(err);
-    }
-  });
-
+app.get("/save", async (res, req, next) => {
+  //let assume the required data from the request body is Name, DateofBirth, Gender
+  const { Name, DateOfBirth, Gender } = req.body;
+  let user = new User({ Name, DateOfBirth, Gender });
+  try {
+    user = await user.save();
+  } catch (ex) {
+    res.send(ex.errors).status(500);
+    return logger.log(ex.errors);
+  }
   res.status(200).send("success");
-
   return res.json(user);
 });
 
